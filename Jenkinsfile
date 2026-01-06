@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
@@ -11,25 +10,25 @@ pipeline {
 
         stage('Restore') {
             steps {
-                sh 'dotnet restore projectCalculadora.sln'
+                bat 'dotnet restore projectCalculadora.sln'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'dotnet build projectCalculadora.sln -c Release --no-restore'
+                bat 'dotnet build projectCalculadora.sln -c Release --no-restore'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'dotnet test calculadoraApp.Tests/calculadoraApp.Tests.csproj -c Release --no-build'
+                bat 'dotnet test calculadoraApp.Tests\\calculadoraApp.Tests.csproj -c Release --no-build'
             }
         }
 
         stage('Publish') {
             steps {
-                sh 'dotnet publish calculadoraApp/calculadoraApp.csproj -c Release -o publish --no-build'
+                bat 'dotnet publish calculadoraApp\\calculadoraApp.csproj -c Release -o publish --no-build'
             }
         }
     }
@@ -37,9 +36,6 @@ pipeline {
     post {
         success {
             archiveArtifacts artifacts: 'publish/**', fingerprint: true
-        }
-        failure {
-            echo 'El pipeline falló'
         }
     }
 }
