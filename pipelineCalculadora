@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        dotnetsdk 'dotnet6'   // Ajusta al nombre configurado en Jenkins
+    }
+
     stages {
 
         stage('Checkout') {
@@ -39,7 +43,7 @@ pipeline {
             archiveArtifacts artifacts: 'publish/**', fingerprint: true
         }
         failure {
-            echo 'El pipeline falló'
+            echo '❌ El pipeline falló'
         }
     }
 }
